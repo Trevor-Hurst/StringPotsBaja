@@ -73,6 +73,7 @@ void setup() {
   pinMode(HALT_LED, OUTPUT);
   pinMode(LOGGING_BUTTON, INPUT);
   pinMode(NEW_RUN_BUTTON, INPUT);
+  pinMode(CALIBRATION_BUTTON, INPUT);
   
   // Start up screen 
   customDrawScreen("HELLO, EMS BAJA", "VERSION" + CODE_VERSION);
