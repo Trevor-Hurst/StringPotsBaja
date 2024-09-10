@@ -214,26 +214,32 @@ void loop() {
   }
 
   //Calibration Mode
-   if (isCalibrationButtonPressed && currentCalibrationButtonState==0)
- {
-  currentCalibrationButtonState++;
-  if (currentCalibrationButtonState==1) {
-    zeroSp1 = analogRead(SP1);//zero value = 0 inches
-    zeroSp2 = analogRead(SP2); 
-    zeroSp3 = analogRead(SP3); 
-    zeroSp4 = analogRead(SP4);
+  if (isCalibrationButtonPressed) // Check if button pressed
+  {
+    if (currentCalibrationButtonState == 0) // Start calibration mode
+    {
+      customDrawScreen(F("Calibration Mode:"), F("Press Button when at Zero")); // Give user information
     }
- }
-else if (isCalibrationButtonPressed && currentCalibrationButtonState>=1) {
-  currentCalibrationButtonState++;
-      if (currentCalibrationButtonState==2) {
+    else if (currentCalibrationButtonState == 1) { // Set to zero value (1 push)
+      zeroSp1 = analogRead(SP1);//zero value = 0 inches
+      zeroSp2 = analogRead(SP2); 
+      zeroSp3 = analogRead(SP3); 
+      zeroSp4 = analogRead(SP4);
+      customDrawScreen(F("Calibration Mode:"), F("Press Button when at Max")); // Give user information
+    }
+    else if (currentCalibrationButtonState == 2) { // Set to max value (2 push)
       maxSp1 = analogRead(SP1);//max value = 26 inches
       maxSp2 = analogRead(SP2);
       maxSp3 = analogRead(SP3);
       maxSp4 = analogRead(SP4);
+      customDrawScreen(F("Calibration Mode"), F("Calibrateed (Exiting)")); // Give user information
+      currentCalibrationButtonState = 0;
+    } else {
+      currentCalibrationButtonState = 0;
     }
-  currentCalibrationButtonState = 0;
- }
+    currentCalibrationButtonState++;
+    delay(100); // Delay otherwise the button will register all 3 modes instantly
+  }
 
   // Write new line to sd card
   if (collectingData && runFile && !copyingFiles){
